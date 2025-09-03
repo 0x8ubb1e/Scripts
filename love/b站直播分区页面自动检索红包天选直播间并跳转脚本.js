@@ -19,13 +19,12 @@
 
 /*
 使用说明:
-		配合 b站直播自动抽红包脚本使用。
-		来到直播分区页面，如：https://live.bilibili.com/p/eden/area-tags?parentAreaId=9&areaId=0
-		点击筛选按钮运行 或 按“F1”或“F2”开始运行
+	配合 b站直播自动抽红包脚本使用。
+	来到直播分区页面，如：https://live.bilibili.com/p/eden/area-tags?parentAreaId=9&areaId=0
+	点击筛选按钮运行 或 按“F1”或“F2”开始运行
 */
 
 window.addEventListener('load', function () {
-
 	let red_packet_data_json = null; // 配置数据
 	let area_id = 9; // 分区id
 	let open_time = 5000; // 打开页面时间间隔
@@ -72,7 +71,7 @@ window.addEventListener('load', function () {
 
 	// 显示弹出框 传入显示的内容content
 	function show_alert (content, auto_hide = true) {
-		clearTimeout(interval_alert_div) // 清除旧的定时
+		clearTimeout(interval_alert_div); // 清除旧的定时
 
 		var alert_div = document.getElementById("alert_div");
 		var alert_content_span = document.getElementById("alert_content_span");
@@ -388,7 +387,7 @@ window.addEventListener('load', function () {
 			// “112”为按键F1，可根据需要修改为其他
 			if (event.keyCode == 112 || event.keyCode == 113) {
 				if (key_flag == 0) {
-					go(page_type) // 按下后执行的代码
+					go(page_type); // 按下后执行的代码
 				}
 				key_flag = 1;
 				for (var i = 0; i < 100000; i++);
@@ -455,24 +454,18 @@ window.addEventListener('load', function () {
 								var pendent_id = json["data"]["list"][i]["pendant_info"][key].pendent_id;
 								// console.log(pendent_id);
 								if (page_type == 0) {
-									// 检索id 是否是红包 或 天选
-									if (pendent_id == 1096 || pendent_id == 504) {
-										// 直播房间号追加入list
-										roomid_list.push(json["data"]["list"][i]["roomid"])
+									if (pendent_id == 1096 || pendent_id == 504) { // 检索id 是否是红包 或 天选
+										roomid_list.push(json["data"]["list"][i]["roomid"]) // 直播房间号追加入list
 										break
 									}
 								} else if (page_type == 1) {
-									// 检索id 是否是红包
-									if (pendent_id == 1096) {
-										// 直播房间号追加入list
-										roomid_list.push(json["data"]["list"][i]["roomid"])
+									if (pendent_id == 1096) { // 检索id 是否是红包
+										roomid_list.push(json["data"]["list"][i]["roomid"]) // 直播房间号追加入list
 										break
 									}
 								} else if (page_type == 2) {
-									// 检索id 是否是天选
-									if (pendent_id == 504) {
-										// 直播房间号追加入list
-										roomid_list.push(json["data"]["list"][i]["roomid"])
+									if (pendent_id == 504) { // 检索id 是否是天选
+										roomid_list.push(json["data"]["list"][i]["roomid"]) // 直播房间号追加入list
 										break
 									}
 								}
@@ -481,7 +474,8 @@ window.addEventListener('load', function () {
 					}
 				}
 
-				roomid_list = roomid_list.filter((value, index) => roomid_list.indexOf(value) === index) // 去重
+
+				roomid_list = roomid_list.filter((value, index) => roomid_list.indexOf(value) === index); // 去重
 
 				// 已经检索到足够数量的直播间，结束
 				if (roomid_list.length >= max_num) {
@@ -641,9 +635,9 @@ window.addEventListener('load', function () {
 			setInterval(() => {
 				if (0 == document.getElementsByClassName("popularity-red-envelope-entry gift-left-part").length &&
 					0 == document.getElementsByClassName("anchor-lottery-entry gift-left-part").length) {
-					window.close() // 关闭页面
+					window.close(); // 关闭页面
 				}
 			}, auto_close_interval * 60 * 1000);
 		}
 	}
-})
+});

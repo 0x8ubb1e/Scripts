@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name								trigger
 // @namespace						http://tampermonkey.net/
-// @version							1.0
+// @version							1.1
 // @description					每天多时间点分别触发多个URL，每个URL每次只打开一次
 // @author							0x8ubb1e
 // @match								*://*
@@ -18,7 +18,7 @@
 	const urls = [
 		"https://18comic.vip/user/kafka97083/daily",
 		"https://www.wwlib.cn/index.php/wuwen",
-		"https://acgfun.moe/plugin.php?id=k_misign:sign"
+		"https://acgfun.art/plugin.php?id=k_misign:sign"
 	];
 
 	const TIMES = ['00:00', '10:30', '13:00', "20:30"]; // 24h:mm

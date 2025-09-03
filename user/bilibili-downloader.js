@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name							bilibili-downloader
 // @namespace					http://tampermonkey.net/
-// @version						1.0
+// @version						1.1
 // @description				解析bilibili视频下载链接，复制到剪贴板，粘贴到解析网站即可
 // @author						0x8ubb1e
 // @match							https://www.bilibili.com/video/*

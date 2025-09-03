@@ -1,8 +1,8 @@
 // ==UserScript==
 // @name							JM天堂
 // @namespace					https://18comic.vip/*
-// @version						1.0
-// @description				JM天堂每日签到，通过点击前后状态判断点击是否有效
+// @version						1.1
+// @description				JM天堂每日签到，通过fetch判断点击是否有效
 // @author						0x8ubb1e
 // @match							https://18comic.vip/user/*/daily
 // @icon							https://www.google.com/s2/favicons?sz=64&domain=18comic.vip
@@ -12,116 +12,68 @@
 (function () {
 	'use strict';
 
-	// 定义一个通用的判断函数
-	function startClick (id, interval = 1000, delay) {
-		const maxAttempts = 100;
+	async function login () {
+		const today = new Date();
+		const year = today.getFullYear();
+		const month = today.getMonth() + 1; // getMonth()返回的月份是从0开始的，所以要加1
+		const day = today.getDate();
+		let daily_id = parseInt(`${year % 10}${month}`) + 1;
+		// console.log(daily_id);
+		console.log(`今天是 ${year}-${month}-${day}`); // 输出：2023-10-5
 
-		const button = document.querySelector(id);
-		console.log(button);
-		const popup = document.getElementById("bouns-popup");
-		const bonus = document.querySelector(".login-bouns");
+		// 開啟本月簽到
+		let button = document.querySelector("#daily");
+		let count = 1;
+		if (button) {
+			console.log(button);
 
-		// 确保 button 是一个 DOM 元素
-		if (!(button instanceof HTMLElement)) {
-			console.error("Invalid button element");
-			return;
-		}
-
-		// 确保 popup 和 bonus 是有效的 DOM 元素
-		if (!popup || !bonus) {
-			console.error("Target elements '#bouns-popup' and '.login-bouns' not found");
-			return;
-		}
-
-		// 如果没有提供 isClickEffective 函数，则默认为永远不生效
-		if (typeof isClickEffective !== "function") {
-			console.warn("No isClickEffective function provided. Click will continue indefinitely.");
-			isClickEffective = () => false;
-		}
-
-		// 获取初始状态
-		const initialState = {
-			display: window.getComputedStyle(popup).display,
-			content: bonus.textContent
-		};
-
-		// 如果初始状态已经满足条件，则直接返回
-		if (initialState.content === "今日已簽到") {
-			console.log("Initial state already satisfies the condition. No need to click.");
-			return;
-		}
-
-		// 判断点击是否生效
-		function isClickEffective () {
-			// 获取当前状态
-			const currentState = {
-				display: window.getComputedStyle(popup).display,
-				content: bonus.textContent
-			};
-
-			// fecth("https://18comic.vip/ajax/user_daily_event?daily_id=57")
-			// "https://18comic.vip/ajax/user_daily_sign" "POST" "daily_id=57&oldStep=2"
-
-			if (initialState.display != currentState.display) {
-				console.log(`page #bouns-popup Display changed from ${initialState.display} to ${currentState.display}`);
-				return true;
+			const popup = document.getElementById("bouns-popup");
+			const bonus = document.querySelector(".login-bouns");
+			while (!popup || !bonus) {
+				console.log("Target elements '#bouns-popup' and '.login-bouns' not found");
+				button.click();
+				console.log(`click #daily times: ${count++}`);
 			}
-
-			if (initialState.content != currentState.content) {
-				console.log(`button .login-bouns Content changed from "${initialState.content}" to "${currentState.content}"`);
-				return true;
-			}
-			return false;
 		}
 
-		// 循环点击
-		let attemptCount = 0;
-		function clickButton () {
-			attemptCount++;
-			console.log(`Attempt ${attemptCount}: Clicking button ${id}...`);
+		// 點擊簽到
+		button = document.querySelector(".login-bouns");
+		count = 1;
+		if (button) {
+			console.log(button);
+
+			while (count < 10) {
+				button.click();
+				console.log(`click .login-bouns times: ${count++}`);
+
+				// "https://18comic.vip/ajax/user_daily_sign" "POST" "daily_id=57&oldStep=2"
+				const data = await fetch(`https://18comic.vip/ajax/user_daily_event?daily_id=${daily_id}`)
+					.then(response => response.json());
+				console.log(`fetch url https://18comic.vip/ajax/user_daily_event?daily_id=${daily_id}`);
+				console.log(data);
+
+				const dateArray = await data['dateArray'];
+				const dateEvent = await data['dateEvent'];
+				const dateMiss = await data['dateMiss'] || [];
+				console.log(`dateArray:\n${dateArray}\ndateEvent:\n${dateEvent}\ndateMiss:\n${dateMiss}\n`);
+
+				if (dateArray.includes(day)) break;
+				console.log(day, dateArray, dateArray.includes(day));
+			}
+		}
+		if (count == 10) {
+			alert("簽到失敗！！！");
+			return;
+		}
+
+		// 離開
+		button = document.querySelector(".btn-secondary");
+		count = 1;
+		if (button) {
+			console.log(button);
 			button.click();
-
-			// 判断点击是否生效
-			if (isClickEffective()) {
-				console.log(`button ${id} Click is effective. Stopping...`);
-				clearInterval(intervalId); // 停止循环
-			} else if (attemptCount >= maxAttempts) {
-				console.log(`button ${id} Reached maximum attempts. Stopping...`);
-				clearInterval(intervalId); // 停止循环
-			}
-
-			// 添加点击后的延迟
-			if (delay > 0) {
-				setTimeout(() => {
-					console.log(`button ${id} Delay after click: ${delay}ms`);
-				}, delay);
-			}
+			console.log(`click .btn-secondary times: ${count++}`);
 		}
-
-		// 使用 setInterval 实现循环点击
-		const intervalId = setInterval(clickButton, interval);
-	}
-
-	function login () {
-		const buttons = [
-			{ id: "#daily", interval: 1000, delay: 500 },
-			{ id: ".login-bouns", interval: 2000, delay: 2000 },
-			{ id: ".btn-secondary", interval: 2000, delay: 500 }
-		];
-
-		buttons.forEach(buttonConfig => {
-			const button = document.querySelector(buttonConfig.id);
-			if (button) {
-				startClick(buttonConfig.id, buttonConfig.interval, buttonConfig.delay);
-			} else {
-				console.error(`Button with ID ${buttonConfig.id} not found.`);
-			}
-		});
-
-		// 在所有按钮点击完成后弹出提示
-		setTimeout(() => {
-			alert("今日已签到");
-		}, 6000); // 假设所有操作在 6000ms 内完成
 	}
 
 	const url = "https://18comic.vip/user/kafka97083/daily";
