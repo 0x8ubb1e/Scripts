@@ -1,14 +1,23 @@
 // ==UserScript==
 // @name							JM天堂
 // @namespace					https://18comic.vip/*
-// @version						1.1
+// @version						1.2
 // @description				JM天堂每日签到，通过fetch判断点击是否有效
 // @author						0x8ubb1e
-// @match							https://18comic.vip/user/*/daily
+// @match							https://18comic.*
+// @match							https://jmcomic-zzz.*
+// @match							https://jm18c-qwq.*
+// @match							https://jm18c-tin.*
+// @match							https://jmcomic-wqw.*
+// @match							https://jmcomic-din.*
 // @icon							https://www.google.com/s2/favicons?sz=64&domain=18comic.vip
+// @updateURL					https://github.com/0x8ubb1e/Scripts/blob/main/user/JM%E5%A4%A9%E5%A0%82.js
+// @downloadURL				https://github.com/0x8ubb1e/Scripts/blob/main/user/JM%E5%A4%A9%E5%A0%82.js
 // @grant							none
 // ==/UserScript==
 
+// 匹配网址
+// '18comic.ink', '18comic.vip', 'jmcomic-zzz.one', 'jmcomic-zzz.org', 'jm18c-qwq.org', 'jm18c-qwq.club', 'jm18c-tin.club', 'jmcomic-wqw.org', 'jmcomic-din.club', 'jmcomic-din.org'
 (function () {
 	'use strict';
 
@@ -76,8 +85,10 @@
 		}
 	}
 
-	const url = "https://18comic.vip/user/kafka97083/daily";
-	if (window.location.href === url) {
+	// const url = "https://18comic.vip/user/*/daily";
+	// if (window.location.href === url) {
+	const path = location.pathname;
+	if (/^\/user\/[^/]+\/profile$/.test(path)) {
 		login();
 	}
 })();
