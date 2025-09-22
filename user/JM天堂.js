@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name							JM天堂
 // @namespace					https://18comic.vip/*
-// @version						1.2.2
+// @version						1.2.3
 // @description				JM天堂每日签到，通过fetch判断点击是否有效
 // @author						0x8ubb1e
 // @match							https://18comic.ink/*
@@ -50,6 +50,7 @@
 		// 點擊簽到
 		button = document.querySelector(".login-bouns");
 		count = 1;
+		let dateArray, dateEvent, dateMiss = [];
 		if (button) {
 			console.log(button);
 
@@ -63,9 +64,9 @@
 				console.log(`fetch url https://18comic.vip/ajax/user_daily_event?daily_id=${daily_id}`);
 				console.log(data);
 
-				const dateArray = await data['dateArray'];
-				const dateEvent = await data['dateEvent'];
-				const dateMiss = await data['dateMiss'] || [];
+				dateArray = await data['dateArray'];
+				dateEvent = await data['dateEvent'];
+				dateMiss = await data['dateMiss'] || [];
 				console.log(`dateArray:\n${dateArray}\ndateEvent:\n${dateEvent}\ndateMiss:\n${dateMiss}\n`);
 
 				if (dateArray.includes(day)) break;
@@ -86,7 +87,7 @@
 			console.log(`click .btn-secondary times: ${count++}`);
 		}
 
-		alert(`今日已签到！\n${dateArray}\n${dateEvent}\n${dateMiss}`)
+		alert(`今日已签到！\ndateArray:\n${dateArray}\ndateEvent:\n${dateEvent}\ndateMiss:\n${dateMiss}`)
 	}
 
 	// const url = "https://18comic.vip/user/*/daily";
