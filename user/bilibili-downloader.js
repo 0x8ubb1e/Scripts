@@ -1,12 +1,14 @@
 // ==UserScript==
 // @name							bilibili-downloader
 // @namespace					http://tampermonkey.net/
-// @version						1.1
+// @version						1.1.0
 // @description				解析bilibili视频下载链接，复制到剪贴板，粘贴到解析网站即可
 // @author						0x8ubb1e
 // @match							https://www.bilibili.com/video/*
 // @match							https://snapany.com/zh/bilibili*
 // @icon							https://www.google.com/s2/favicons?sz=64&domain=bilibili.com
+// @updateURL					https://raw.githubusercontent.com/0x8ubb1e/Scripts/refs/heads/main/user/bilibili-downloader.js
+// @downloadURL				https://raw.githubusercontent.com/0x8ubb1e/Scripts/refs/heads/main/user/bilibili-downloader.js
 // @grant							none
 // ==/UserScript==
 

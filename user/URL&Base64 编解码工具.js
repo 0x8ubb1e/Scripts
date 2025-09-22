@@ -1,10 +1,12 @@
 // ==UserScript==
 // @name							URL & Base64 编解码工具
 // @namespace					http://tampermonkey.net/
-// @version						1.2
+// @version						1.2.0
 // @description				当前页面URL编解码和Base64编解码工具
 // @author						0x8ubb1e
 // @match							*://*/*
+// @updateURL					https://raw.githubusercontent.com/0x8ubb1e/Scripts/refs/heads/main/user/URL & Base64 编解码工具.js
+// @downloadURL				https://raw.githubusercontent.com/0x8ubb1e/Scripts/refs/heads/main/user/URL & Base64 编解码工具.js
 // @grant							none
 // ==/UserScript==
 

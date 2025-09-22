@@ -1,11 +1,13 @@
 // ==UserScript==
 // @name						无问AI
 // @namespace				http://tampermonkey.net/
-// @version					1.0
+// @version					1.0.0
 // @description			无问AI社区每日签到
 // @author					0x8ubb1e
 // @match						https://www.wwlib.cn/index.php/wuwen
 // @icon						https://www.google.com/s2/favicons?sz=64&domain=wwlib.cn
+// @updateURL					https://raw.githubusercontent.com/0x8ubb1e/Scripts/refs/heads/main/user/无问AI.js
+// @downloadURL				https://raw.githubusercontent.com/0x8ubb1e/Scripts/refs/heads/main/user/无问AI.js
 // @grant						none
 // ==/UserScript==
 

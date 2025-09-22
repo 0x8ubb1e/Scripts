@@ -1,13 +1,15 @@
 // ==UserScript==
 // @name								trigger
 // @namespace						http://tampermonkey.net/
-// @version							1.1
+// @version							1.2.0
 // @description					每天多时间点分别触发多个URL，每个URL每次只打开一次
 // @author							0x8ubb1e
 // @match								*://*
 // @match								*://*/*
 // @match								*://*/*/*
 // @icon								https://www.google.com/s2/favicons?sz=64&domain=tampermonkey.com
+// @updateURL					https://raw.githubusercontent.com/0x8ubb1e/Scripts/refs/heads/main/user/trigger.js
+// @downloadURL				https://raw.githubusercontent.com/0x8ubb1e/Scripts/refs/heads/main/user/trigger.js
 // @grant								none
 // ==/UserScript==
 
@@ -18,11 +20,17 @@
 	const urls = [
 		"https://18comic.vip/user/kafka97083/daily",
 		"https://www.wwlib.cn/index.php/wuwen",
-		"https://acgfun.art/plugin.php?id=k_misign:sign"
+		"https://acgfun.pro/plugin.php?id=k_misign:sign"
 	];
 
 	const TIMES = ['00:00', '10:30', '13:00', "20:30"]; // 24h:mm
 	const DONE_PREFIX = 'DUO_done_'; // localStorage 键前缀
+
+	// 添加提示框
+	const iframe = document.createElement('iframe');
+	iframe.src = 'https://raw.githubusercontent.com/0x8ubb1e/Scripts/refs/heads/main/user/Tasklet.html';
+	iframe.style.cssText = `position: fixed; top: 100px; right: 10px; width: 360px; height: 400px; border: 1px solid #ccc; z-index: 9999; background: #fff;`;
+	document.body.appendChild(iframe);
 
 	// 2. 工具函数
 	const todayStr = () => new Date().toISOString().slice(0, 10);

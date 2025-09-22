@@ -1,23 +1,25 @@
 // ==UserScript==
 // @name							JM天堂
 // @namespace					https://18comic.vip/*
-// @version						1.2
+// @version						1.2.1
 // @description				JM天堂每日签到，通过fetch判断点击是否有效
 // @author						0x8ubb1e
-// @match							https://18comic.*
-// @match							https://jmcomic-zzz.*
-// @match							https://jm18c-qwq.*
-// @match							https://jm18c-tin.*
-// @match							https://jmcomic-wqw.*
-// @match							https://jmcomic-din.*
+// @match							https://18comic.ink/*
+// @match							https://18comic.vip/*
+// @match							https://jmcomic-zzz.one/*
+// @match							https://jmcomic-zzz.org/*
+// @match							https://jm18c-qwq.org/*
+// @match							https://jm18c-qwq.club/*
+// @match							https://jm18c-tin.club/*
+// @match							https://jmcomic-wqw.org/*
+// @match							https://jmcomic-din.club/*
+// @match							https://jmcomic-din.org/*
 // @icon							https://www.google.com/s2/favicons?sz=64&domain=18comic.vip
-// @updateURL					https://github.com/0x8ubb1e/Scripts/blob/main/user/JM%E5%A4%A9%E5%A0%82.js
-// @downloadURL				https://github.com/0x8ubb1e/Scripts/blob/main/user/JM%E5%A4%A9%E5%A0%82.js
+// @updateURL					https://raw.githubusercontent.com/0x8ubb1e/Scripts/refs/heads/main/user/JM天堂.js
+// @downloadURL				https://raw.githubusercontent.com/0x8ubb1e/Scripts/refs/heads/main/user/JM天堂.js
 // @grant							none
 // ==/UserScript==
 
-// 匹配网址
-// '18comic.ink', '18comic.vip', 'jmcomic-zzz.one', 'jmcomic-zzz.org', 'jm18c-qwq.org', 'jm18c-qwq.club', 'jm18c-tin.club', 'jmcomic-wqw.org', 'jmcomic-din.club', 'jmcomic-din.org'
 (function () {
 	'use strict';
 
@@ -83,6 +85,8 @@
 			button.click();
 			console.log(`click .btn-secondary times: ${count++}`);
 		}
+
+		alert('今日已签到！\n')
 	}
 
 	// const url = "https://18comic.vip/user/*/daily";

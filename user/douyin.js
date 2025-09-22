@@ -1,11 +1,13 @@
 // ==UserScript==
 // @name						douyin
 // @namespace				http://tampermonkey.net/
-// @version					1.0
+// @version					1.0.0
 // @description			抖音自动关注，点击进入主页自动关注
 // @author					0x8ubb1e
 // @match						https://www.douyin.com/user/*
 // @icon						https://www.google.com/s2/favicons?sz=64&domain=douyin.com
+// @updateURL					https://raw.githubusercontent.com/0x8ubb1e/Scripts/refs/heads/main/user/douyin.js
+// @downloadURL				https://raw.githubusercontent.com/0x8ubb1e/Scripts/refs/heads/main/user/douyin.js
 // @grant						none
 // ==/UserScript==
 
