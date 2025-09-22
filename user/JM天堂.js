@@ -92,7 +92,7 @@
 	// const url = "https://18comic.vip/user/*/daily";
 	// if (window.location.href === url) {
 	const path = location.pathname;
-	if (/^\/user\/[^/]+\/profile$/.test(path)) {
+	if (/^\/user\/[^/]+\/daily$/.test(path)) {
 		login();
 	}
 })();
