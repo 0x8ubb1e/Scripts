@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name							JM天堂
 // @namespace					https://18comic.vip/*
-// @version						1.2.1
+// @version						1.2.2
 // @description				JM天堂每日签到，通过fetch判断点击是否有效
 // @author						0x8ubb1e
 // @match							https://18comic.ink/*
@@ -86,7 +86,7 @@
 			console.log(`click .btn-secondary times: ${count++}`);
 		}
 
-		alert('今日已签到！\n')
+		alert(`今日已签到！\n${dateArray}\n${dateEvent}\n${dateMiss}`)
 	}
 
 	// const url = "https://18comic.vip/user/*/daily";
