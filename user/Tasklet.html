@@ -21,13 +21,10 @@
 			position: fixed;
 			top: 50px;
 			left: 50px;
-			width: 350px;
 			background: #fff;
 			border-radius: 8px;
 			box-shadow: 0 0 10px rgba(0, 0, 0, .2);
 			resize: both;
-			min-width: 280px;
-			max-width: 500px;
 			z-index: 999
 		}
 
@@ -37,6 +34,7 @@
 			padding: 10px;
 			display: flex;
 			justify-content: space-between;
+			align-items: center;
 			cursor: move
 		}
 
@@ -282,19 +280,19 @@
 				const div = document.createElement('div');
 				div.className = 'item' + (t.top ? ' top' : '') + (t.done ? ' done' : '') + (t.hidden ? ' hidden' : '');
 				div.innerHTML = `
-      <div class="doneBtn" title="提前完成"></div>
-      <span class="name">${t.name}</span>
-      <span class="time">${t.time}</span>
-      <span class="ctrl">
-        <button class="topBtn" title="置顶/取消置顶">${t.top ? '↓' : '↑'}</button>
-        <button class="hideBtn" title="隐藏/显示">${t.hidden ? '👁' : '🙈'}</button>
-        <button class="editBtn">✏️</button>
-        <button class="delBtn">❌</button>
-      </span>
-    `;
+					<div class="doneBtn" title="提前完成"></div>
+					<span class="name">${t.name}</span>
+					<span class="time">${t.time}</span>
+					<span class="ctrl">
+						<button class="topBtn" title="置顶/取消置顶">${t.top ? '↓' : '↑'}</button>
+						<button class="hideBtn" title="隐藏/显示">${t.hidden ? '👁' : '🙈'}</button>
+						<button class="editBtn">✏️</button>
+						<button class="delBtn">❌</button>
+					</span>
+				`;
 				list.appendChild(div);
 
-				// 事件绑定
+				/* 事件绑定 */
 				div.querySelector('.doneBtn').onclick = () => toggleDone(t.id, !t.done);
 				div.querySelector('.topBtn').onclick = () => toggleTop(t.id, !t.top);
 				div.querySelector('.hideBtn').onclick = () => toggleHide(t.id, !t.hidden);
@@ -375,7 +373,7 @@
 		/* ===== 启动 ===== */
 		openDB().then(() => {
 			render();
-			// 定时刷新列表（秒级提醒用，可优化）
+			/* 定时刷新列表（秒级提醒用，可优化）*/
 			setInterval(render, 30000);
 		});
 	</script>
