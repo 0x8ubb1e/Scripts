@@ -39,25 +39,25 @@
 
 		const css = `
 			* {box-sizing: border-box; font-family: "Microsoft YaHei", sans-serif}
-			.header {background: #4CAF50; color: #fff; padding: 10px; display: flex; justify-content: space-between; align-items: center; cursor: move}
-			.header button {width: 30px; height: 30px; background: none; border: none; color: #fff; font-size: 16px; cursor: pointer}
-			.list {width: 350px; max-height: 250px; overflow-y: auto; padding: 5px}
-			.item {display: flex; align-items: center; padding: 6px; border-bottom: 1px solid #eee}
-			.item .doneBtn {width: 16px; height: 16px; border-radius: 50%; border: 1px solid #999; cursor: pointer; margin-right: 5px;}
-			.item.top {background-color: #eee;}
-			.item.done .doneBtn {background: #999;}
-			.item.done .name {text-decoration: line-through; color: #999;}
-			.item.hidden {/* display: none */}
-			.name {flex: 1; margin: 0 5px}
-			.time {font-size: 12px; color: #666; margin-right: 5px}
-			.ctrl button {width: 21px; background: none; border: none; font-size: 14px; cursor: pointer; margin: 0 2px}
-			.add {width: 350px; padding: 10px; border-top: 1px solid #eee}
-			.add input, .add button {width: 100%; margin-bottom: 5px; padding: 6px; border: 1px solid #ddd; border-radius: 4px}
-			.add button {background: #4CAF50; color: #fff; border: none}
-			.modal {position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, .4); display: none; align-items: center; justify-content: center}
-			.modal-content {background: #fff; padding: 20px; border-radius: 6px; width: 280px}
-			.modal input {width: 100%; padding: 6px; margin: 5px 0}
-			.modal button {margin: 5px 5px 0 0}
+			#taskWidget .header {background: #4CAF50; color: #fff; padding: 10px; display: flex; justify-content: space-between; align-items: center; cursor: move}
+			#taskWidget .header button {width: 30px; height: 30px; background: none; border: none; color: #fff; font-size: 16px; cursor: pointer}
+			#taskWidget .list {width: 350px; max-height: 250px; overflow-y: auto; padding: 5px}
+			#taskWidget .item {display: flex; align-items: center; padding: 6px; border-bottom: 1px solid #eee}
+			#taskWidget .item .doneBtn {width: 16px; height: 16px; border-radius: 50%; border: 1px solid #999; cursor: pointer; margin-right: 5px;}
+			#taskWidget .item.top {background-color: #eee;}
+			#taskWidget .item.done .doneBtn {background: #999;}
+			#taskWidget .item.done .name {text-decoration: line-through; color: #999;}
+			#taskWidget .item.hidden {/* display: none */}
+			#taskWidget .name {flex: 1; margin: 0 5px}
+			#taskWidget .time {font-size: 12px; color: #666; margin-right: 5px}
+			#taskWidget .ctrl button {width: 21px; background: none; border: none; font-size: 14px; cursor: pointer; margin: 0 2px}
+			#taskWidget .add {width: 350px; padding: 10px; border-top: 1px solid #eee}
+			#taskWidget .add input, .add button {width: 100%; margin-bottom: 5px; padding: 6px; border: 1px solid #ddd; border-radius: 4px}
+			#taskWidget .add button {background: #4CAF50; color: #fff; border: none}
+			#taskWidget .modal {position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, .4); display: none; align-items: center; justify-content: center}
+			#taskWidget .modal-content {background: #fff; padding: 20px; border-radius: 6px; width: 280px}
+			#taskWidget .modal input {width: 100%; padding: 6px; margin: 5px 0}
+			#taskWidget .modal button {margin: 5px 5px 0 0}
 		`;
 		document.head.appendChild(document.createElement('style')).textContent = css;
 	}
