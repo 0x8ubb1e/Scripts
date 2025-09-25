@@ -64,9 +64,9 @@
 				console.log(`fetch url https://18comic.vip/ajax/user_daily_event?daily_id=${daily_id}`);
 				console.log(data);
 
-				dateArray = await data['dateArray'];
-				dateEvent = await data['dateEvent'];
-				dateMiss = await data['dateMiss'] || [];
+				dateArray = await data.dateArray;
+				dateEvent = await data.dateEvent;
+				dateMiss = await data.dateMiss || [];
 				console.log(`dateArray:\n${dateArray}\ndateEvent:\n${dateEvent}\ndateMiss:\n${dateMiss}\n`);
 
 				if (dateArray.includes(day)) break;
@@ -88,7 +88,8 @@
 		}
 
 		dateEvent = dateEvent.map(date => date.split(' ')[0]);
-		alert(`今日已签到！\ndateArray:\n${dateArray}\ndateEvent:\n${dateEvent}\ndateMiss:\n${dateMiss}`)
+		alert(`今日已签到！\ndateArray:\n${dateArray.join(', ')}\ndateEvent:\n${dateEvent.join(', ')}\ndateMiss:\n${dateMiss.join(', ')}`)
+		// console.log(JSON.stringify(`今日已签到！\ndateArray:\n${dateArray.join(', ')}\ndateEvent:\n${dateEvent.join(', ')}\ndateMiss:\n${dateMiss.join(', ')}`));
 	}
 
 	// const url = "https://18comic.vip/user/*/daily";
