@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name							JM天堂
 // @namespace					https://18comic.vip/*
-// @version						1.2.4
+// @version						1.2.5
 // @description				JM天堂每日签到，通过fetch判断点击是否有效
 // @author						0x8ubb1e
 // @match							https://18comic.ink/*
@@ -28,9 +28,9 @@
 		const year = today.getFullYear();
 		const month = today.getMonth() + 1; // getMonth()返回的月份是从0开始的，所以要加1
 		const day = today.getDate();
-		let daily_id = parseInt(`${year % 10}${month}`) + 1;
+		let daily_id = parseInt(year) % 10 * 10 + parseInt(month) + 1;
 		// console.log(daily_id);
-		console.log(`今天是 ${year}-${month}-${day}`); // 输出：2023-10-5
+		console.log(`今天是 ${year}-${month}-${day}\ndaily_id = ${daily_id}`); // 输出：今天是 2023-10-5\ndaily_id = 31
 
 		// 開啟本月簽到
 		let button = document.querySelector("#daily");
