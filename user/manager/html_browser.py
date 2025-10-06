@@ -32,13 +32,13 @@ HTML_TMPL = Template('''<!DOCTYPE html>
 <html lang="zh">
 <head>
   <meta charset="UTF-8">
-	<meta name="version" content="6.0" />
+	<meta name="version" content="7.0" />
   <title>HTML 文件浏览器</title>
   <style>
     body { font-family: sans-serif; padding: 2em; }
     button { margin: .5em; padding: .5em 1em; font-size: 1em; }
     #info { margin-top: 1em; font-size: 1.2em; }
-    ul { list-style: none; padding: 0; margin-top: 1em; max-height: 50vh; overflow: auto; border: 1px solid #ccc; border-radius: 4px; }
+    ul { list-style: none; padding: 0; margin-top: 1em; max-height: calc(100vh - 88px - 60px - 48px - 20px - 95px); overflow: auto; border: 1px solid #ccc; border-radius: 4px; }
     li { padding: 4px 8px; display: flex; align-items: center; }
     .viewed { color: #999; text-decoration: line-through; }
     .viewed::before { content: "✔ "; color: green; margin-right: 4px; }
@@ -63,7 +63,8 @@ HTML_TMPL = Template('''<!DOCTYPE html>
     /* -------- 工具函数 -------- */
     function getViewed() {
       try {
-        return JSON.parse(localStorage.getItem(KEY) || '[]');
+        const v = localStorage.getItem(KEY);
+				return v ? JSON.parse(v) : [];
       } catch {
         return [];
       }
@@ -71,6 +72,7 @@ HTML_TMPL = Template('''<!DOCTYPE html>
 
     function saveViewed(file) {
       const v = getViewed();
+			// console.log(v);
       if (!v.includes(file)) {
         v.push(file);
         localStorage.setItem(KEY, JSON.stringify(v));
@@ -93,16 +95,19 @@ HTML_TMPL = Template('''<!DOCTYPE html>
     }
 
     function update() {
-      const viewed = getViewed().length;
-      document.getElementById('info').textContent =
-        `已看：$${viewed} / 总计：$${ALL.length}，剩余：$${ALL.length - viewed}`; <!-- 这里 $$ 转义 -->
+      const viewed = getViewed();
+      document.getElementById('info').textContent = `已看：$${viewed.length} / 总计：$${ALL.length}，剩余：$${ALL.length - viewed}`; <!-- 这里 $$ 转义 -->
 
 			// 渲染列表
-			const list=document.getElementById('list');list.innerHTML='';
-			ALL.forEach(f=>{
-				const li=document.createElement('li');
-				li.textContent=f;
-				if(viewed.includes(f)){li.classList.add('viewed');}
+			const list = document.getElementById('list');
+			list.innerHTML='';
+			ALL.forEach(f => {
+				const li = document.createElement('li');
+				li.textContent = f;
+				// console.log(viewed);
+				if (viewed.includes(f)) {
+					li.classList.add('viewed');
+				}
 				list.appendChild(li);
 			});
 		}
@@ -141,6 +146,7 @@ HTML_TMPL = Template('''<!DOCTYPE html>
 				}, 1000); 
 			}
 			next();
+		}
 
     /* -------- 初始化 -------- */
     update();
