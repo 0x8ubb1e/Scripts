@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="version" content="1.0" />
+	<title>HTML 文件浏览器</title>
+	<style>
+		body {
+			font-family: sans-serif;
+			padding: 2em;
+		}
+
+		button {
+			margin: 0.5em;
+			padding: 0.5em 1em;
+			font-size: 1em;
+		}
+
+		#info {
+			margin-top: 1em;
+			font-size: 1.2em;
+		}
+	</style>
+</head>
+
+<body>
+
+	<h1>HTML 文件浏览器</h1>
+	<button onclick="startBrowsing('sequential')">顺序浏览</button>
+	<button onclick="startBrowsing('random')">随机浏览</button>
+	<div id="info">请选择一个模式开始</div>
+
+	<script>
+		const files = [
+			// 这里会自动填充所有 .html 文件名
+		];
+
+		let viewed = 0;
+		let remaining = 0;
+		let queue = [];
+
+		// 自动扫描当前目录下的 .html 文件（除了自己）
+		fetch('./')
+			.then(res => res.text())
+			.then(text => {
+				const parser = new DOMParser();
+				const doc = parser.parseFromString(text, 'text/html');
+				const links = Array.from(doc.querySelectorAll('a'))
+					.map(a => a.href.split('/').pop())
+					.filter(name => name.endsWith('.html') && name !== 'manager.html');
+				files.push(...links);
+				remaining = files.length;
+				updateInfo();
+			});
+
+		function updateInfo () {
+			document.getElementById('info').innerText = `已看：${viewed} / 总计：${files.length}，剩余：${remaining}`;
+		}
+
+		function startBrowsing (mode) {
+			if (files.length === 0) {
+				alert('未找到 .html 文件');
+				return;
+			}
+			queue = [...files];
+			if (mode === 'random') {
+				queue.sort(() => Math.random() - 0.5);
+			}
+			openNext();
+		}
+
+		function openNext () {
+			if (queue.length === 0) {
+				alert('全部浏览完成！');
+				return;
+			}
+			const next = queue.shift();
+			const win = window.open(next, '_blank');
+			if (!win) {
+				alert('请允许弹出窗口');
+				return;
+			}
+			viewed++;
+			remaining--;
+			updateInfo();
+			const timer = setInterval(() => {
+				if (win.closed) {
+					clearInterval(timer);
+					openNext();
+				}
+			}, 1000);
+		}
+	</script>
+
+</body>
+
+</html>
