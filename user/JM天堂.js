@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name							JM天堂
 // @namespace					https://18comic.vip/*
-// @version						1.2.5
+// @version						1.2.6
 // @description				JM天堂每日签到，通过fetch判断点击是否有效
 // @author						0x8ubb1e
 // @match							https://18comic.ink/*
@@ -58,11 +58,32 @@
 				button.click();
 				console.log(`click .login-bouns times: ${count++}`);
 
+				const { hostname, pathname, protocol, origin } = window.location;
+				const apiURL = `${origin}/ajax/user_daily_event?daily_id=${daily_id}`;
+				console.log(`fetch url ${apiURL}`);
+
 				// "https://18comic.vip/ajax/user_daily_sign" "POST" "daily_id=57&oldStep=2"
-				const data = await fetch(`https://18comic.vip/ajax/user_daily_event?daily_id=${daily_id}`)
-					.then(response => response.json());
-				console.log(`fetch url https://18comic.vip/ajax/user_daily_event?daily_id=${daily_id}`);
-				console.log(data);
+				// const data = await fetch(`https://18comic.vip/ajax/user_daily_event?daily_id=${daily_id}`)
+				const data = await fetch(apiURL, {
+					method: 'GET',
+					credentials: 'include', // 需要 cookie 就打开
+					headers: {
+						'User-Agent': navigator.userAgent,
+						'Referer': location.href,
+						'Accept': 'application/json, text/plain, */*',
+						'X-Requested-With': 'XMLHttpRequest'
+					}
+				})
+					// .then(response => response.json());
+					.then(r => {
+						if (!r.ok) throw new Error(`HTTP ${r.status}`);
+						return r.json(); // 按实际接口格式改
+					})
+					.then(data => {
+						console.log('[fetch ok]', data);
+						return data;
+					})
+					.catch(err => console.warn('[fetch error]', err));
 
 				dateArray = await data.dateArray;
 				dateEvent = await data.dateEvent;
