@@ -32,12 +32,16 @@ HTML_TMPL = Template('''<!DOCTYPE html>
 <html lang="zh">
 <head>
   <meta charset="UTF-8">
-	<meta name="version" content="5.0" />
+	<meta name="version" content="6.0" />
   <title>HTML 文件浏览器</title>
   <style>
     body { font-family: sans-serif; padding: 2em; }
     button { margin: .5em; padding: .5em 1em; font-size: 1em; }
     #info { margin-top: 1em; font-size: 1.2em; }
+    ul { list-style: none; padding: 0; margin-top: 1em; max-height: 50vh; overflow: auto; border: 1px solid #ccc; border-radius: 4px; }
+    li { padding: 4px 8px; display: flex; align-items: center; }
+    .viewed { color: #999; text-decoration: line-through; }
+    .viewed::before { content: "✔ "; color: green; margin-right: 4px; }
   </style>
 </head>
 
@@ -48,6 +52,8 @@ HTML_TMPL = Template('''<!DOCTYPE html>
   <button onclick="reset()">重置进度</button>
   <button onclick="exportList()">导出已看列表</button>
   <div id="info">共 $total 个文件</div>
+
+	<ul id="list"></ul>
 
   <script>
     const ALL = $jsonArr;
@@ -90,7 +96,16 @@ HTML_TMPL = Template('''<!DOCTYPE html>
       const viewed = getViewed().length;
       document.getElementById('info').textContent =
         `已看：$${viewed} / 总计：$${ALL.length}，剩余：$${ALL.length - viewed}`; <!-- 这里 $$ 转义 -->
-    }
+
+			// 渲染列表
+			const list=document.getElementById('list');list.innerHTML='';
+			ALL.forEach(f=>{
+				const li=document.createElement('li');
+				li.textContent=f;
+				if(viewed.includes(f)){li.classList.add('viewed');}
+				list.appendChild(li);
+			});
+		}
 
     /* -------- 主流程 -------- */
     function start(mode) {
@@ -99,30 +114,33 @@ HTML_TMPL = Template('''<!DOCTYPE html>
         alert('全部浏览完成！');
         return;
       }
-      queue = mode === 'rand' ? unseen.sort(() => Math.random() - 0.5) : unseen;
-      next();
-    }
+      const queue = mode === 'rand' ? unseen.sort(() => Math.random() - 0.5) : unseen;
 
-    function next() {
-      if (!queue.length) {
-        alert('本轮完成！');
-        return;
-      }
-      const file = queue.shift();
-      const win = window.open(file, '_blank');
-      if (!win) {
-        alert('请允许弹出窗口');
-        return;
-      }
-      saveViewed(file);
-      update();
-      const timer = setInterval(() => {
-        if (win.closed) {
-          clearInterval(timer);
-          next();
-        }
-      }, 1000);
-    }
+			let idx=0;
+			function next() {
+				// if (!queue.length) {
+				if(idx >= queue.length) {
+					alert('本轮完成！');
+					return;
+				}
+
+				// const file = queue.shift();
+				const file = queue[idx++];
+				const win = window.open(file, '_blank');
+				if (!win) {
+					alert('请允许弹出窗口');
+					return;
+				}
+				saveViewed(file); 
+				update(); 
+				const t = setInterval(() => {
+					if (win.closed) {
+						clearInterval(t);
+						next();
+					}
+				}, 1000); 
+			}
+			next();
 
     /* -------- 初始化 -------- */
     update();
