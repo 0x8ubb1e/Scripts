@@ -3,8 +3,8 @@
 
 <head>
 	<meta charset="UTF-8">
-	<meta name="version" content="1.0" />
-	<title>HTML 文件浏览器</title>
+	<meta name="version" content="2.0" />
+	<title>HTML 文件浏览器（递归版）</title>
 	<style>
 		body {
 			font-family: sans-serif;
@@ -21,58 +21,89 @@
 			margin-top: 1em;
 			font-size: 1.2em;
 		}
+
+		#log {
+			margin-top: 1em;
+			font-size: 0.9em;
+			color: #555;
+		}
 	</style>
 </head>
 
 <body>
 
-	<h1>HTML 文件浏览器</h1>
+	<h1>HTML 文件浏览器（递归扫描版）</h1>
 	<button onclick="startBrowsing('sequential')">顺序浏览</button>
 	<button onclick="startBrowsing('random')">随机浏览</button>
-	<div id="info">请选择一个模式开始</div>
+	<div id="info">正在扫描文件……</div>
+	<div id="log"></div>
 
 	<script>
-		const files = [
-			// 这里会自动填充所有 .html 文件名
-		];
-
+		const allFiles = [];
 		let viewed = 0;
-		let remaining = 0;
 		let queue = [];
+		const storageKey = 'html_viewed_list';
 
-		// 自动扫描当前目录下的 .html 文件（除了自己）
-		fetch('./')
-			.then(res => res.text())
-			.then(text => {
-				const parser = new DOMParser();
-				const doc = parser.parseFromString(text, 'text/html');
-				const links = Array.from(doc.querySelectorAll('a'))
-					.map(a => a.href.split('/').pop())
-					.filter(name => name.endsWith('.html') && name !== 'manager.html');
-				files.push(...links);
-				remaining = files.length;
-				updateInfo();
-			});
+		// 递归扫描目录
+		async function scanDir (path = './') {
+			const res = await fetch(path);
+			const text = await res.text();
+			const doc = new DOMParser().parseFromString(text, 'text/html');
+			const links = Array.from(doc.querySelectorAll('a'));
+
+			for (const a of links) {
+				const href = a.getAttribute('href');
+				if (!href) continue;
+				const name = href.split('/').pop();
+				if (href.endsWith('/')) {
+					// 是目录，递归扫描
+					await scanDir(path + href);
+				} else if (href.endsWith('.html') && name !== 'manager.html') {
+					allFiles.push(path + href);
+				}
+			}
+		}
+
+		async function init () {
+			await scanDir();
+			remaining = allFiles.length;
+			document.getElementById('info').innerText = `扫描完成，共找到 ${allFiles.length} 个 .html 文件`;
+		}
 
 		function updateInfo () {
-			document.getElementById('info').innerText = `已看：${viewed} / 总计：${files.length}，剩余：${remaining}`;
+			document.getElementById('info').innerText = `已看：${viewed} / 总计：${allFiles.length}，剩余：${allFiles.length - viewed}`;
+		}
+
+		function getViewedList () {
+			try {
+				return JSON.parse(localStorage.getItem(storageKey) || '[]');
+			} catch {
+				return [];
+			}
+		}
+
+		function markViewed (file) {
+			const viewedList = getViewedList();
+			if (!viewedList.includes(file)) {
+				viewedList.push(file);
+				localStorage.setItem(storageKey, JSON.stringify(viewedList));
+			}
 		}
 
 		function startBrowsing (mode) {
-			if (files.length === 0) {
-				alert('未找到 .html 文件');
+			const viewedList = getViewedList();
+			const unseen = allFiles.filter(f => !viewedList.includes(f));
+			if (unseen.length === 0) {
+				alert('所有文件都已浏览完成！');
 				return;
 			}
-			queue = [...files];
-			if (mode === 'random') {
-				queue.sort(() => Math.random() - 0.5);
-			}
+			queue = mode === 'random' ? unseen.sort(() => Math.random() - 0.5) : unseen;
 			openNext();
 		}
 
 		function openNext () {
 			if (queue.length === 0) {
-				alert('全部浏览完成！');
+				alert('本轮浏览完成！');
 				return;
 			}
 			const next = queue.shift();
@@ -82,7 +113,7 @@
 				return;
 			}
 			viewed++;
-			remaining--;
+			markViewed(next);
 			updateInfo();
 			const timer = setInterval(() => {
 				if (win.closed) {
@@ -91,6 +122,8 @@
 				}
 			}, 1000);
 		}
+
+		init();
 	</script>
 
 </body>
