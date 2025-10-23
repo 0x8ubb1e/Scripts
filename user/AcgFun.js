@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name						AcgFun
 // @namespace				http://tampermonkey.net/
-// @version					1.1.0
+// @version					1.1.1
 // @description			AcgFun论坛每日签到
 // @author					0x8ubb1e
 // @match						https://acgfun.moe/*
@@ -58,7 +58,7 @@
 		login();
 		// } else if (window.location.href.startsWith("https://acgfun.moe/thread-")) {
 		// } else if (window.location.href.startsWith("https://acgfun.art/thread-")) {
-	} else if (/^\/thread-[^/]$/.test(location.pathname)) { // 快捷收藏
+	} else if (/^\/thread-[^/]*$/.test(location.pathname)) { // 快捷收藏
 		collect();
 	}
 })();
