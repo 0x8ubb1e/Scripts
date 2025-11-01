@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name							JM天堂
 // @namespace					https://18comic.vip/*
-// @version						1.2.6
+// @version						1.2.7
 // @description				JM天堂每日签到，通过fetch判断点击是否有效
 // @author						0x8ubb1e
 // @match							https://18comic.ink/*
@@ -36,6 +36,7 @@
 		let button = document.querySelector("#daily");
 		let count = 1;
 		if (button) {
+			button.click();
 			console.log(button);
 
 			const popup = document.getElementById("bouns-popup");
